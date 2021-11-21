@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>ИМЯ</th>
+        <th>ПАРОЛЬ</th>
+        <th>РОЛЬ</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}"
+        th:style="'font-weight: bold;'">
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.password}"></td>
+        <td th:text="${user.getRoles}"></td>
+        <td><a th:href="@{'/user/' + ${user.id}}">edit</a></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
