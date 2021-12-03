@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -12,6 +13,8 @@
     <title>Document</title>
 </head>
 <body>
+
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
@@ -27,58 +30,39 @@
             <ul class="navbar-nav mr-auto"></ul>
             <ul class="navbar-nav">
                 <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/admin}" href="#">admin-home</a>
+                    <a class="nav-link" th:href="@{/}" href="#">home</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/logout}" href="#">logout</a>
+                    <a class="nav-link" th:href="@{/shop}" href="#">shop</a>
                 </li>
-
+                <li class="nav-item active">
+                    <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/login}" href="#">login</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}" href="#">logout</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/cart}" href="#">cart</a>
+                </li>
+<!--                <li class="nav-item active">-->
+<!--                    <span class="nav-link" th:text="${cartCount}"></span>-->
+<!--                </li>-->
             </ul>
 
         </div>
     </div>
 </nav>
-<div class="container">
-    <h3>Add a new Product</h3>
-    <form th:action="@{/admin/products/add}" method="post" object="${productDTO}" enctype="multipart/form-data">
-        <div class="row">
-            <div class="col-sm-5">
-
-                <input type="hidden" field="*{id}" name="id">
-
-                <div class="form-group">
-                    <label for="name">Город отправления</label>
-                    <input type="text" class="form-control" required field="*{name}" name="name" th:value="${productDTO.name}" id="name"
-                           placeholder="Enter name">
-
-                </div>
-
-                <div class="form-group">
-                    <label for="flyout">Дата вылета</label>
-                    <input type="datetime-local" class="form-control" required field="*{flyout}" name="flyout" th:value="${productDTO.flyout}" id="flyout"
-                           placeholder="Price">
-                </div>
-                <div class="form-group">
-                    <label for="flyin">Дата вылета</label>
-                    <input type="datetime-local" class="form-control" required field="*{flyin}" name="flyin" th:value="${productDTO.flyin}" id="flyin"
-                           placeholder="Price">
-                </div>
-                <div class="form-group">
-                    <label for="price"> Стоимость</label>
-                    <input type="number" class="form-control" required field="*{price}" name="price" th:value="${productDTO.price}" id="price"
-                           placeholder="Стоимость билета">
-                </div>
-                <div class="form-group">
-                    <label for="description">Product Description</label>
-                    <textarea class="form-control" rows="5" :field="*{description}" name="description" th:value="${productDTO.description}" id="description"></textarea>
-                </div>
-            </div>
-
-             />
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-sm-7 mt-5">
+            <h2 th:text="${product.name}"></h2>
+            <h2>Время вылета <span th:text="${product.flyin}"></span></h2>
+            <h2>Время прилета:<span th:text="${product.flyout}"></span></h2>
+            <h2>Стоимость<span th:text="${product.price}"></span></h2>
+            <p th:text="${product.description}"></p>
+            <a href="" th:href="@{/addToCart/{id}(id = ${product.id})}" class="btn btn-primary">Add to cart</a>
         </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-
-    </form>
+    </div>
 </div>
 
 
@@ -91,6 +75,5 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
-
 </body>
 </html>

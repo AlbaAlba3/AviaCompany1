@@ -7,6 +7,7 @@
 <body>
 <form method="POST" th:action="@{/user}" th:object="${user}">
     <input type="text" name="username" th:value="${user.username}">
+    <input type="text" name="balance" th:value="${user.balance}">
 
 <!--    <ul>-->
 <!--        <li th:each="role : ${roles}">-->

@@ -26,20 +26,31 @@ public class UserController {
         return "userList";
     }
 
-    @GetMapping("{user}")
+    @GetMapping("/edit/{user}")
     public String userEditForm(@PathVariable User user, Model model) {
         model.addAttribute("user", user);
         model.addAttribute("roles",Role.values());
         return "userEdit";
     }
 
+    @GetMapping("/delete/{user}")
+    public String userDeleteForm(@PathVariable User user) {
+        userRepository.delete(user);
+        return "redirect:/user";
+    }
+
+
     @PostMapping
     public String userSave(
             @RequestParam String username,
+            @RequestParam Integer balance,
             @RequestParam Map<String,String> form,
             @RequestParam("userId") User user
-    ) {
+
+    )
+    {
         user.setUsername(username);
+        user.setBalance(balance);
 
         Set<String> roles = Arrays.stream(Role.values())
                 .map(Role::name)
@@ -53,6 +64,8 @@ public class UserController {
                 user.getRoles().add(Role.valueOf(key));
             }
         }
+
+
 
         userRepository.save(user);
 

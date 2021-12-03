@@ -11,6 +11,7 @@
         <th>ИМЯ</th>
         <th>ПАРОЛЬ</th>
         <th>РОЛЬ</th>
+        <th>БАЛАНС</th>
     </tr>
     </thead>
     <tbody>
@@ -19,7 +20,9 @@
         <td th:text="${user.username}"></td>
         <td th:text="${user.password}"></td>
         <td th:text="${user.getRoles}"></td>
-        <td><a th:href="@{'/user/' + ${user.id}}">edit</a></td>
+        <td th:text="${user.balance}"></td>
+        <td><a th:href="@{'/user/edit/' + ${user.id}}">edit</a></td>
+        <td><a th:href="@{'/user/delete/' + ${user.id}}">delete</a></td>
     </tr>
     </tbody>
 </table>
