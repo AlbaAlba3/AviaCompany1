@@ -9,6 +9,7 @@
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
           integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <script src="static/js/sample-registration-form-validation.js"></script>
     <title>Document</title>
 </head>
 <body>
@@ -27,10 +28,10 @@
             <ul class="navbar-nav mr-auto"></ul>
             <ul class="navbar-nav">
                 <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/admin}" href="#">admin-home</a>
+                    <a class="nav-link" th:href="@{/admin}" href="#">Админ</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/logout}" href="#">logout</a>
+                    <a class="nav-link" th:href="@{/logout}" href="#">Выйти</a>
                 </li>
 
             </ul>
@@ -39,16 +40,23 @@
     </div>
 </nav>
 <div class="container">
-    <h3>Add a new Product</h3>
-    <form th:action="@{/admin/products/add}" method="post" object="${productDTO}" enctype="multipart/form-data">
+    <h3>Добавить новые билеты</h3>
+    <form th:action="@{/admin/products/add}" method="post" object="${productDTO}" enctype="multipart/form-data"  >
         <div class="row">
             <div class="col-sm-5">
 
-                <input type="hidden" field="*{id}" name="id">
+                <input type="hidden" th:value="${productDTO.id}" th:name="id">
 
                 <div class="form-group">
                     <label for="name">Город отправления</label>
                     <input type="text" class="form-control" required field="*{name}" name="name" th:value="${productDTO.name}" id="name"
+                           placeholder="Enter name">
+
+                </div>
+
+                <div class="form-group">
+                    <label for="namein">Город отправления</label>
+                    <input type="text" class="form-control" required field="*{namein}" name="namein" th:value="${productDTO.namein}" id="namein"
                            placeholder="Enter name">
 
                 </div>
@@ -59,7 +67,7 @@
                            placeholder="Price">
                 </div>
                 <div class="form-group">
-                    <label for="flyin">Дата вылета</label>
+                    <label for="flyin">Дата прилета</label>
                     <input type="datetime-local" class="form-control" required field="*{flyin}" name="flyin" th:value="${productDTO.flyin}" id="flyin"
                            placeholder="Price">
                 </div>
@@ -67,6 +75,11 @@
                     <label for="price"> Стоимость</label>
                     <input type="number" class="form-control" required field="*{price}" name="price" th:value="${productDTO.price}" id="price"
                            placeholder="Стоимость билета">
+                </div>
+                <div class="form-group">
+                    <label for="places"> Количество мест</label>
+                    <input type="number" class="form-control" required field="*{places}" name="places" th:value="${productDTO.places}" id="places"
+                           placeholder="Количество мест">
                 </div>
                 <div class="form-group">
                     <label for="description">Product Description</label>

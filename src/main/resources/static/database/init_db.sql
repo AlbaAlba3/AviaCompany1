@@ -22,9 +22,7 @@ create table cart_item
 create table order_table
 (
     id int8 not null,
-    address         varchar(255),
     status          varchar(255),
-    phone           varchar(255),
     products_prise int4,
     user_id int8,
     primary key (id)
@@ -47,6 +45,7 @@ create table product
     name        varchar(255)  not null,
     flyin       varchar(255)  not null,
     flyout       varchar(255),
+    places      int4,
     price       int4,
     primary key (id)
 );

@@ -1,20 +1,21 @@
 package com.example.AviaCompany1.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 
 @Entity
 @Table(name = "cartitems")
-public class CartItem {
+public class CartItem implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY,cascade=CascadeType.MERGE)
     private Cart cart;
 
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER,cascade =CascadeType.ALL)
     private Product product;
 
     private int amount;

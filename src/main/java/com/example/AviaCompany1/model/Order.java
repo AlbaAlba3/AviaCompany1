@@ -17,7 +17,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.MERGE)
     private User user;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER,
@@ -31,11 +31,6 @@ public class Order {
 //    private Date dateCreated;
 
 
-    private String address;
-
-
-    private String phone;
-
     @Enumerated(EnumType.STRING)
     private Status status;
 
@@ -46,9 +41,8 @@ public class Order {
         this.user = user;
         this.orderedProducts = orderedProducts;
         this.productsPrise = productsPrise;
-        this.address = address;
-        this.phone = phone;
         this.status =status ;
+
     }
 
     public Long getId() {
@@ -93,21 +87,7 @@ public class Order {
         this.user = user;
     }
 
-    public String getAddress() {
-        return address;
-    }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
 
     public Status getStatus() {
         return status;

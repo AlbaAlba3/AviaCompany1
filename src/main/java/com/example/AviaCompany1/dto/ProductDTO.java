@@ -6,16 +6,36 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.time.LocalDateTime;
 import java.util.Date;
 
 
 public class ProductDTO {
 
+    private Integer places;
+
+    public Integer getPlaces() {
+        return places;
+    }
+
+    public void setPlaces(Integer places) {
+        this.places = places;
+    }
+
     private Long id;
 
     private String name;
 
+    public String getNamein() {
+        return namein;
+    }
+
+    public void setNamein(String namein) {
+        this.namein = namein;
+    }
+
+    private String namein;
 
     @DateTimeFormat(pattern = "dd/MMM/yyyy HH:mm")
     private String flyout;

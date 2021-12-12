@@ -10,13 +10,11 @@ public class OrderedProduct {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY,cascade =CascadeType.ALL)
     private Order order;
 
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER,cascade =CascadeType.MERGE)
     private Product product;
-
-
 
 
     private int amount;

@@ -24,10 +24,10 @@
             <ul class="navbar-nav mr-auto"></ul>
             <ul class="navbar-nav">
                 <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/admin}" href="#">admin-home</a>
+                    <a class="nav-link" th:href="@{/admin}" href="#">Админ</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" th:href="@{/logout}" href="#">logout</a>
+                    <a class="nav-link" th:href="@{/logout}" href="#">Выйти</a>
                 </li>
 
             </ul>
@@ -42,10 +42,12 @@
         <thead class="thead-light">
         <tr>
             <th scope="col">Билет</th>
-            <th scope="col">Город</th>
+            <th scope="col">Город отправления</th>
+            <th scope="col">Город назначения</th>
            <th scope="col">Время вылета</th>
            <th scope="col">Время прилета</th>
             <th scope="col">Стоимость билета</th>
+            <th scope="col">Количество мест</th>
             <th scope="col">Delete</th>
             <th scope="col">Update</th>
         </tr>
@@ -55,10 +57,11 @@
         <tr th:each="product, iStat : ${products}">
             <th scope="row" th:text="${iStat.index + 1}">1</th>
             <td th:text="${product.name}">Larry</td>
+            <td th:text="${product.namein}">Larry</td>
             <td th:text="${product.flyout}">Larry</td>
             <td th:text="${product.flyin}">Larry</td>
             <td th:text="${product.price}">Larry</td>
-
+            <td th:text="${product.places}">Larry</td>
             <td><a href="" th:href="@{/admin/product/delete/{id}(id=${product.id})}" class="btn btn-danger">Delete</a></td>
             <td><a href="" th:href="@{/admin/product/update/{id}(id=${product.id})}" class="btn btn-warning">Update</a></td>
 

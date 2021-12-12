@@ -20,13 +20,12 @@ public class Cart implements Serializable {
     @OneToOne
     private User user;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true,
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, orphanRemoval = true,
             targetEntity = CartItem.class, mappedBy = "cart")
     private List<CartItem> cartItems = new ArrayList<>();
 
 
     private Integer totalItems;
-
 
     private Integer totalPrise;
 

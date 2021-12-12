@@ -31,6 +31,7 @@ public class RegistrationController {
             return "/failed";
         }
 
+
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
         userRepository.save(user);

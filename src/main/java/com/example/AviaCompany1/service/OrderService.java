@@ -3,6 +3,9 @@ package com.example.AviaCompany1.service;
 
 import com.example.AviaCompany1.model.*;
 import com.example.AviaCompany1.repo.OrderRepository;
+import com.example.AviaCompany1.repo.OrderedProductRepository;
+import com.example.AviaCompany1.repo.ProductRepository;
+import com.example.AviaCompany1.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +19,19 @@ import java.util.stream.Collectors;
 public class OrderService {
 //    private final String MAIL_MESSAGE = "Ваш заказ оформлен";
 //    private final String MAIL_SUBJECT = "Заказ";
-//    @Autowired
-//    private MailSender mailSender;
+
+
+    @Autowired
+    private ProductRepository productRepository;
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private OrderedProductRepository orderedProductRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public List<Order> findAll() {
         return (List<Order>) orderRepository.findAll();
@@ -30,31 +41,38 @@ public class OrderService {
         return orderRepository.findAllByUser(user);
     }
 
-    public void makeOrder(User user, Cart cart, String address, String phone) {
-        if (user.getOrders() == null) {
-            user.setOrders(new ArrayList<Order>());
-        }
+    public void makeOrder(String username, Cart cart) {
+
+        User user=userRepository.findByUsername(username);
+
+//       if (user.getOrders() == null) {
+//           user.setOrders(new ArrayList<Order>());
+//        }
 
         Order order = new Order();
         Set<OrderedProduct> orderedProducts = new HashSet<>();
         for (CartItem cartItem : cart.getCartItems()) {
             orderedProducts.add(new OrderedProduct(order, cartItem.getProduct(), cartItem.getAmount()));
+
         }
+
 
         order.setStatus(Status.Unhandled);
         order.setUser(user);
         order.setOrderedProducts(orderedProducts);
+        for (CartItem cartItem : cart.getCartItems()) {
+            cartItem.getProduct().setPlaces(cartItem.getProduct().getPlaces()-cartItem.getAmount());
+            productRepository.save(cartItem.getProduct());
+        }
         order.setProductsPrise(cart.getTotalPrise());
-        order.setAddress(address);
-        order.setPhone(phone);
+
+        order.getUser().setBalance(order.getUser().getBalance()-cart.getTotalPrise());
 
         orderRepository.save(order);
-        List<String> productNames = order.getOrderedProducts().stream().map(OrderedProduct::getProduct).map(Product::getName).collect(Collectors.toList());
-        String names = String.join(", ", productNames);
-        String message = String.format("%s:\n" +
-                        "%s"
-                , "MAIL_MESSAGE", names);
 
-//        mailSender.send(user.getEmail(), MAIL_SUBJECT, message);
+
+//        List<String> productNames = order.getOrderedProducts().stream().map(OrderedProduct::getProduct).map(Product::getName).collect(Collectors.toList());
+//        String names = String.join(", ", productNames);
+
     }
 }

@@ -16,16 +16,36 @@ public class Product {
 
     private String name;
 
+    private String namein;
 
-    @DateTimeFormat(pattern = "dd/MMM/yyyy HH:mm")
+
+    @DateTimeFormat(pattern = "HH:mm:ss yyyy-MM-dd")
     private String flyout;
 
-    @DateTimeFormat(pattern = "dd/MMM/yyyy HH:mm")
+    @DateTimeFormat(pattern = "HH:mm:ss yyyy-MM-dd")
     private String flyin;
 
     private Integer price;
 
+    private Integer places;
+
+    public Integer getPlaces() {
+        return places;
+    }
+
+    public void setPlaces(Integer places) {
+        this.places = places;
+    }
+
     private String description;
+
+    public String getNamein() {
+        return namein;
+    }
+
+    public void setNamein(String namein) {
+        this.namein = namein;
+    }
 
     public Long getId() {
         return id;

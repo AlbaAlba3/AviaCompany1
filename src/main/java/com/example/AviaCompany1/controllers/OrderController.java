@@ -1,8 +1,9 @@
 package com.example.AviaCompany1.controllers;
 
-import com.example.AviaCompany1.model.Cart;
-import com.example.AviaCompany1.model.Order;
-import com.example.AviaCompany1.model.User;
+import com.example.AviaCompany1.dto.ProductDTO;
+import com.example.AviaCompany1.model.*;
+import com.example.AviaCompany1.repo.CartRepository;
+import com.example.AviaCompany1.repo.OrderedProductRepository;
 import com.example.AviaCompany1.repo.UserRepository;
 import com.example.AviaCompany1.service.CartService;
 import com.example.AviaCompany1.service.OrderService;
@@ -15,8 +16,11 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
+@Controller
 public class OrderController {
     private final String ERROR_ORDER_MESSAGE = "Заполните пустые поля";
     @Autowired
@@ -28,53 +32,82 @@ public class OrderController {
     @Autowired
     private UserRepository userRepository;
 
-//    @Autowired
-//    private UserContactsService userContactsService;
-//
-//    @Autowired
-//    private UserContactsRepository userContactsRepository;
+    @Autowired
+    private OrderedProductRepository orderedProductRepository;
+
+
 
     @GetMapping("/ordering")
     public String getMakeOder(Model model) {
 
+        model.addAttribute("cart",CartService.cart);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username=auth.getName();
-        User user=userRepository.findByUsername(username);
-        Cart cart = user.getCart();
-//        if (cart == null) {
-//            cart = new Cart();
-//            cart.setUser(user);
-//            user.setCart(new Cart());
-//        }
-//        UserContacts userContacts = userContactsService.getUserContactsByUser(user);
-        model.addAttribute("cart", cart);
-//        model.addAttribute("userContacts", userContacts);
+        String username = auth.getName();
+        model.addAttribute("user",userRepository.findByUsername(username));
+
         return "ordering";
     }
 
-    @PostMapping("ordering")
-    public String MakeOrder(@AuthenticationPrincipal User user, @RequestParam Cart cart, @RequestParam String address, @RequestParam String phone, Model model) {
-        if (StringUtils.isEmpty(address) || StringUtils.isEmpty(phone)) {
-            model.addAttribute("cart", cart);
-//            UserContacts userContacts = userContactsService.getUserContactsByUser(user);
-//            model.addAttribute("userContacts", userContacts);
-            model.addAttribute("error", ERROR_ORDER_MESSAGE);
-            return "ordering";
+    @GetMapping("/history")
+    public String getHistory(Model model) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username=auth.getName();
+        User user=userRepository.findByUsername(username);
+        model.addAttribute("user",userRepository.findByUsername(username));
+
+        Long id=user.getId();
+        List<OrderedProduct> orderedProductsbyUser=new ArrayList<OrderedProduct>();
+        List<OrderedProduct>  orderproducts=orderedProductRepository.findAll();
+
+        for (OrderedProduct orderedProduct:orderproducts) {
+            if(orderedProduct.getOrder().getUser().getId()==id)
+            {
+                orderedProductsbyUser.add(orderedProduct);
+            }
         }
-        orderService.makeOrder(user, cart, address, phone);
-        cartService.clearCart(cart.getId());
+
+
+
+        model.addAttribute("cart",orderedProductsbyUser);
+
+
+        return "history";
+    }
+
+    @GetMapping("/history/remove/{id}")
+    public String cartItemRemove(@PathVariable Long id)
+    {
+        orderedProductRepository.deleteById(id);
+
+        return "redirect:/history";
+    }
+
+
+    @PostMapping("/ordering")
+    public String MakeOrder(Model model) {
+
+        String message="ЗАКАЗ НЕ МОЖЕТ БЫТЬ ВЫПОЛНЕН,НЕДОСТАТОЧНО ДЕНЕГ НА БАЛАНСЕ";
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username=auth.getName();
+        User user=userRepository.findByUsername(username);
+
+        Cart cart=cartService.getCartByUser(username);
+
+        if (user.getBalance()>=cart.getTotalPrise()){
+        orderService.makeOrder(username, cart);
+        cartService.clearCart(CartService.cart);
+
+        }
+        else
+        {
+            model.addAttribute("message",message);
+            model.addAttribute("user",user);
+            return "unlucky";
+        }
 
         return "redirect:/shop";
     }
 
-    @GetMapping("{order}")
-    public String getOrder(@AuthenticationPrincipal User user, @PathVariable Order order, Model model) {
-        if (orderService.findAllByUser(user).contains(order)) {
-            model.addAttribute("order", order);
-//            model.addAttribute("userContacts", userContactsRepository.findById(order.getUser().getUserContacts().getId()).get());
-            return "order";
-        } else {
-            return null;
-        }
-    }
+
 }

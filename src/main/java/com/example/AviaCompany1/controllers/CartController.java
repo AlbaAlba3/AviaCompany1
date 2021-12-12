@@ -1,23 +1,21 @@
 package com.example.AviaCompany1.controllers;
 
+import com.example.AviaCompany1.model.CartItem;
 import com.example.AviaCompany1.model.Product;
-import com.example.AviaCompany1.model.Role;
 import com.example.AviaCompany1.model.User;
 import com.example.AviaCompany1.repo.CartRepository;
+import com.example.AviaCompany1.repo.UserRepository;
 import com.example.AviaCompany1.service.CartService;
 import com.example.AviaCompany1.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class CartController {
@@ -30,10 +28,28 @@ public class CartController {
     @Autowired
     CartRepository cartRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
+
+
     @GetMapping("/addToCart/{id}")
-    public String addToCart(@PathVariable int id)
+    public String addToCart(@PathVariable Long id,Model model)
     {
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        String username=auth.getName();
+//
+//        CartItem cartItem=new CartItem();
+//        User user = userRepository.findByUsername(username);
+//        cartItem.setProduct(productService.getProductById(id).get());
+//        CartService.cartitems.add(cartItem);
+
         CartService.cart.add(productService.getProductById(id).get());
+
+//        if(productService.getProductById(id).get().getPrice()>user.getBalance())
+//        {
+//            return "unlucky";
+//        }
         return "redirect:/shop";
     }
 
@@ -43,14 +59,17 @@ public class CartController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username=auth.getName();
 
-        model.addAttribute("carts", cartService.getCartByUser(username));
+
+
         model.addAttribute("cartCount",CartService.cart.size());
-        model.addAttribute("total",CartService.cart.stream().mapToDouble(Product::getId).sum());
+        model.addAttribute("total",CartService.cart.stream().mapToDouble(Product::getPrice).sum());
         model.addAttribute("cart",CartService.cart);
-//        userRepository.save(user);
+        model.addAttribute("user",userRepository.findByUsername(username));
+
 
         return "cart";
     }
+
 
     @GetMapping("/cart/removeItem/{index}")
     public String cartItemRemove(@PathVariable int index)
@@ -62,7 +81,8 @@ public class CartController {
     @GetMapping("/checkout")
     public String checkout(Model model)
     {
-        model.addAttribute("total",CartService.cart.stream().mapToDouble(Product::getId).sum());
+        model.addAttribute("total",CartService.cart.stream().mapToDouble(Product::getPrice).sum());
+
         return "ordering";
     }
 

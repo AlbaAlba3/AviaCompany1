@@ -44,6 +44,9 @@ public class UserController {
     public String userSave(
             @RequestParam String username,
             @RequestParam Integer balance,
+            @RequestParam Integer age,
+            @RequestParam String city,
+            @RequestParam String name,
             @RequestParam Map<String,String> form,
             @RequestParam("userId") User user
 
@@ -51,6 +54,9 @@ public class UserController {
     {
         user.setUsername(username);
         user.setBalance(balance);
+        user.setAge(age);
+        user.setCity(city);
+        user.setName(name);
 
         Set<String> roles = Arrays.stream(Role.values())
                 .map(Role::name)
