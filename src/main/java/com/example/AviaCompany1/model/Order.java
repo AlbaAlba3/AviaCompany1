@@ -10,7 +10,6 @@ import java.util.Set;
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 @Entity
-@Data
 @Table(name = "order_table")
 public class Order {
     @Id
@@ -42,7 +41,6 @@ public class Order {
         this.orderedProducts = orderedProducts;
         this.productsPrise = productsPrise;
         this.status =status ;
-
     }
 
     public Long getId() {
@@ -54,13 +52,6 @@ public class Order {
     }
 
 
-    public User getUserAccount() {
-        return user;
-    }
-
-    public void setUserAccount(User userAccount) {
-        this.user = userAccount;
-    }
 
     public Set<OrderedProduct> getOrderedProducts() {
         return orderedProducts;

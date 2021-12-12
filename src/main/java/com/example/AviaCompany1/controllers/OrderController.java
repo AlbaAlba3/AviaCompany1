@@ -7,6 +7,7 @@ import com.example.AviaCompany1.repo.OrderedProductRepository;
 import com.example.AviaCompany1.repo.UserRepository;
 import com.example.AviaCompany1.service.CartService;
 import com.example.AviaCompany1.service.OrderService;
+import com.example.AviaCompany1.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -40,6 +41,8 @@ public class OrderController {
     @GetMapping("/ordering")
     public String getMakeOder(Model model) {
 
+        model.addAttribute("cartCount",CartService.cart.size());
+        model.addAttribute("total",CartService.cart.stream().mapToDouble(Product::getPrice).sum());
         model.addAttribute("cart",CartService.cart);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
@@ -67,19 +70,17 @@ public class OrderController {
             }
         }
 
-
-
-        model.addAttribute("cart",orderedProductsbyUser);
+        model.addAttribute("history",orderedProductsbyUser);
 
 
         return "history";
     }
 
     @GetMapping("/history/remove/{id}")
-    public String cartItemRemove(@PathVariable Long id)
+    public String cartItemRemove(@PathVariable("id") Long id)
     {
-        orderedProductRepository.deleteById(id);
 
+        orderService.cancelorder(id);
         return "redirect:/history";
     }
 

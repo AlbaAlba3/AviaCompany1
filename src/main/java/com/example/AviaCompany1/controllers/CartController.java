@@ -58,9 +58,6 @@ public class CartController {
     {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username=auth.getName();
-
-
-
         model.addAttribute("cartCount",CartService.cart.size());
         model.addAttribute("total",CartService.cart.stream().mapToDouble(Product::getPrice).sum());
         model.addAttribute("cart",CartService.cart);

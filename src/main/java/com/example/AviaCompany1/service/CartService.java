@@ -29,9 +29,6 @@ public class CartService {
 
     User user;
 
-
-    CartItem cartItem=new CartItem();
-
     public static List<Product> cart;
 
     static {
@@ -55,11 +52,13 @@ public class CartService {
         Cart cartuser =new Cart();
 
 
-            for (Product product : cart) {
+            for (Product product : CartService.cart) {
+                CartItem cartItem=new CartItem();
                 cartItem.setProduct(product);
                 cartItem.setAmount(1);
                 cartItem.setCart(cartuser);
                 cartitems.add(cartItem);
+
 //                cartItemRepository.save(cartItem);
             }
 

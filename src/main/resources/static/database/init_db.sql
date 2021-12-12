@@ -3,7 +3,7 @@ create table cart
 (
     id int8 not null,
     total_items int4,
-    count_prise int4,
+    total_prise int4,
     user_id int8,
     primary key (id)
 );

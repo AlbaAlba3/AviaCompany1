@@ -41,6 +41,34 @@ public class OrderService {
         return orderRepository.findAllByUser(user);
     }
 
+
+    public void cancelorder(Long id)
+    {
+        //вернуть деньги
+        //вернуть место
+        //удалить из orderepproducts
+
+
+        OrderedProduct orderedProduct=orderedProductRepository.getById(id);
+        Set<OrderedProduct> list=orderedProduct.getOrder().getOrderedProducts();
+        Set<OrderedProduct> list1=new HashSet<>();
+        for (OrderedProduct orderedProduct1 : list)
+        {
+            if(orderedProduct.getId()!=orderedProduct1.getId())
+            {
+                list1.add(orderedProduct1);
+            }
+        }
+
+        orderRepository.deleteById(orderedProduct.getOrder().getId());
+        orderedProduct.getOrder().setStatus(Status.Accepted);
+        orderedProduct.getOrder().setUser(orderedProduct.getOrder().getUser());
+        orderedProduct.getOrder().setOrderedProducts(list1);
+        orderedProduct.getOrder().getUser().setBalance(orderedProduct.getOrder().getUser().getBalance()+orderedProduct.getProduct().getPrice());
+        orderedProduct.getProduct().setPlaces(orderedProduct.getProduct().getPlaces()+1);
+        orderRepository.save(orderedProduct.getOrder());
+    }
+
     public void makeOrder(String username, Cart cart) {
 
         User user=userRepository.findByUsername(username);
@@ -57,7 +85,7 @@ public class OrderService {
         }
 
 
-        order.setStatus(Status.Unhandled);
+        order.setStatus(Status.Accepted);
         order.setUser(user);
         order.setOrderedProducts(orderedProducts);
         for (CartItem cartItem : cart.getCartItems()) {
@@ -67,6 +95,8 @@ public class OrderService {
         order.setProductsPrise(cart.getTotalPrise());
 
         order.getUser().setBalance(order.getUser().getBalance()-cart.getTotalPrise());
+
+
 
         orderRepository.save(order);
 

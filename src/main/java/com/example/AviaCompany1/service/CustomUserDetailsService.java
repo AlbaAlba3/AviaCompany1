@@ -14,18 +14,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository dao;
     @Override
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        com.example.AviaCompany1.model.User myuser= dao.findByUsername(userName);
-        if (myuser == null) {
-            throw new UsernameNotFoundException("Unknown user: "+userName);
-        }
-        UserDetails user = User.builder()
-                .username(myuser.getUsername())
-                .password(myuser.getPassword())
-                .roles(myuser.getRoles().toString())
-                .build();
-
-        return user;
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return dao.findByUsername(username);
     }
 }
 
