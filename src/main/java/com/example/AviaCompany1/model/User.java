@@ -66,11 +66,12 @@ public class User implements UserDetails {
     }
 
     public Integer getBalance() {
-        if(balance==null)
+        if (balance==null)
         {
             balance=0;
             return balance;
         }
+            
         return balance;
     }
 
