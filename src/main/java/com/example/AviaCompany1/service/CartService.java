@@ -67,6 +67,7 @@ public class CartService {
             cartuser.setUser(user);
             cartuser.setCartItems(cartitems);
             cartuser.setTotalItems(cartuser.getTotalItems());
+            cartuser.setTotalPrise(cartuser.getTotalPrise());
             user.setCart(cartuser);
 
 //        if (user.getCart().getCartItems() == null) {

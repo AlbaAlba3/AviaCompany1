@@ -36,6 +36,9 @@ public class OrderController {
     @Autowired
     private OrderedProductRepository orderedProductRepository;
 
+    @Autowired
+    private CartRepository cartRepository;
+
 
 
     @GetMapping("/ordering")
@@ -88,7 +91,6 @@ public class OrderController {
     @PostMapping("/ordering")
     public String MakeOrder(Model model) {
 
-        String message="ЗАКАЗ НЕ МОЖЕТ БЫТЬ ВЫПОЛНЕН,НЕДОСТАТОЧНО ДЕНЕГ НА БАЛАНСЕ";
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username=auth.getName();
         User user=userRepository.findByUsername(username);
@@ -102,7 +104,7 @@ public class OrderController {
         }
         else
         {
-            model.addAttribute("message",message);
+            cartService.clearCart(CartService.cart);
             model.addAttribute("user",user);
             return "unlucky";
         }

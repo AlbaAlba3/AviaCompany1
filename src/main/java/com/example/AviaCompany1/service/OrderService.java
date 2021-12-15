@@ -96,8 +96,6 @@ public class OrderService {
 
         order.getUser().setBalance(order.getUser().getBalance()-cart.getTotalPrise());
 
-
-
         orderRepository.save(order);
 
 
