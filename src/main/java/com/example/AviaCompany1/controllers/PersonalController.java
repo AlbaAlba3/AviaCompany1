@@ -36,7 +36,11 @@ public class PersonalController {
         return "personalEdit";
     }
 
-
+    @GetMapping("/balance/{user}")
+    public String BalanceForm(@PathVariable User user, Model model) {
+        model.addAttribute("user", user);
+        return "balanceedit";
+    }
 
     @PostMapping
     public String userSave(
@@ -45,13 +49,15 @@ public class PersonalController {
             @RequestParam Integer age,
             @RequestParam String city,
             @RequestParam String name,
+            @RequestParam String password,
             @RequestParam("userId") User user
 
     )
     {
         user.setUsername(username);
-        user.setBalance(balance);
+        user.setBalance(balance+user.getBalance());
         user.setAge(age);
+        user.setPassword(password);
         user.setCity(city);
         user.setName(name);
 

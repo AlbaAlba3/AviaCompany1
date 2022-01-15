@@ -53,11 +53,11 @@
 </nav>
 <center>
 <form th:action="@{/search}">
-    Filter: <input type="text" name="keyword" id="keyword" size="50" th:value="${keyword}" required />
+    Ключевое слово: <input type="text" name="keyword" id="keyword" size="50" th:value="${keyword}" required />
     &nbsp;
-    <input type="submit" value="Search" />
+    <input type="submit" value="Искать" />
     &nbsp;
-    <input type="button" value="Clear" id="btnClear" onclick="clearSearch()" />
+<!--    <input type="button" value="Очистить" id="btnClear" onclick="clearSearch()" />-->
 
 </form>
 <script type="text/javascript">

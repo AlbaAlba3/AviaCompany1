@@ -30,8 +30,8 @@ public class Order {
 //    private Date dateCreated;
 
 
-    @Enumerated(EnumType.STRING)
-    private Status status;
+//    @Enumerated(EnumType.STRING)
+//    private Status status;
 
     public Order() {
     }
@@ -40,7 +40,7 @@ public class Order {
         this.user = user;
         this.orderedProducts = orderedProducts;
         this.productsPrise = productsPrise;
-        this.status =status ;
+//        this.status =status ;
     }
 
     public Long getId() {
@@ -80,11 +80,11 @@ public class Order {
 
 
 
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
+//    public Status getStatus() {
+//        return status;
+//    }
+//
+//    public void setStatus(Status status) {
+//        this.status = status;
+//    }
 }

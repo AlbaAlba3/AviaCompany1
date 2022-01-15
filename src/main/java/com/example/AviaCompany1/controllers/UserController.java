@@ -60,6 +60,7 @@ public class UserController {
         user.setCity(city);
         user.setName(name);
 
+
         Set<String> roles = Arrays.stream(Role.values())
                 .map(Role::name)
                 .collect(Collectors.toSet());

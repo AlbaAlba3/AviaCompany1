@@ -2,9 +2,12 @@ package com.example.AviaCompany1.controllers;
 
 
 import com.example.AviaCompany1.dto.ProductDTO;
+import com.example.AviaCompany1.model.OrderedProduct;
 import com.example.AviaCompany1.model.Product;
+import com.example.AviaCompany1.repo.OrderedProductRepository;
 import com.example.AviaCompany1.repo.ProductRepository;
 import com.example.AviaCompany1.service.ProductService;
+import com.example.AviaCompany1.service.StatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.annotation.Secured;
@@ -14,13 +17,24 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import lombok.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 @Controller
 @PreAuthorize("hasAuthority('ADMIN')")
 public class AdminController {
 
+
+    @Autowired
+    StatisticsService statisticsService;
+
     @Autowired
     ProductService productService;
 
+    @Autowired
+    OrderedProductRepository orderedProductRepository;
 
     @GetMapping("/admin")
     public String adminHome(){
@@ -30,7 +44,16 @@ public class AdminController {
 
     @GetMapping("/admin/products")
     public String products(Model model){
+
         model.addAttribute("products",productService.getAllProduct());
+
+        Map<String,Integer> stat=statisticsService.numberstat();
+        model.addAttribute("count",stat.get("count"));
+        model.addAttribute("price",stat.get("price"));
+        ArrayList<String> popular=statisticsService.populartickets();
+        model.addAttribute("popular",popular);
+
+
         return "products";
     }
 
@@ -61,7 +84,7 @@ public class AdminController {
     @GetMapping("/admin/product/delete/{id}")
     public String deleteProduct(@PathVariable long id){
         productService.removeProductById(id);
-        return "redirect:/admin/products";
+    return "redirect:/admin/products";
     }
 
 

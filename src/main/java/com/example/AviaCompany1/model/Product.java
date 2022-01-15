@@ -29,6 +29,16 @@ public class Product {
 
     private Integer places;
 
+    private Integer buyplaces;
+
+    public Integer getBuyplaces() {
+        return buyplaces;
+    }
+
+    public void setBuyplaces(Integer buyplaces) {
+        this.buyplaces = buyplaces;
+    }
+
     public Integer getPlaces() {
         return places;
     }

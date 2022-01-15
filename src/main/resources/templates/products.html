@@ -38,6 +38,28 @@
 <div class="container-fluid">
 
     <a th:href="@{/admin/products/add}" style="margin: 20px 0" class="btn btn-primary">Добавить билеты</a>
+
+
+    <table class="table">
+        <thead class="thead-light">
+        <tbody>
+        <div><th scope="col">Статистика по билетам:</th></div>
+        <tr>
+            <td>Билетов продано всего: </td>
+            <td th:text="${count}"></td>
+        </tr>
+        <tr>
+            <td>Общая стоимость проданных билетов: </td>
+            <td th:text="${price}"></td>
+        </tr>
+        <tr>
+            <td>Самое популярное направление: </td>
+            <td th:text="${popular}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+
     <table class="table">
         <thead class="thead-light">
         <tr>
@@ -48,8 +70,8 @@
            <th scope="col">Время прилета</th>
             <th scope="col">Стоимость билета</th>
             <th scope="col">Количество мест</th>
-            <th scope="col">Delete</th>
-            <th scope="col">Update</th>
+            <th scope="col">Удалить</th>
+            <th scope="col">Обновить</th>
         </tr>
         </thead>
         <tbody>
@@ -62,8 +84,8 @@
             <td th:text="${product.flyin}">Larry</td>
             <td th:text="${product.price}">Larry</td>
             <td th:text="${product.places}">Larry</td>
-            <td><a href="" th:href="@{/admin/product/delete/{id}(id=${product.id})}" class="btn btn-danger">Delete</a></td>
-            <td><a href="" th:href="@{/admin/product/update/{id}(id=${product.id})}" class="btn btn-warning">Update</a></td>
+            <td><a href="" th:href="@{/admin/product/delete/{id}(id=${product.id})}" class="btn btn-danger">Удалить</a></td>
+            <td><a href="" th:href="@{/admin/product/update/{id}(id=${product.id})}" class="btn btn-warning">Обновить</a></td>
 
         </tr>
         </tbody>

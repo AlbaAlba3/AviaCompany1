@@ -13,6 +13,9 @@
         <a sec:authorize="hasAuthority('USER')" class="me-3 py-2 text-dark text-decoration-none" href="/personal">Личный кабинет</a>
         <a class="me-3 py-2 text-dark text-decoration-none" href="/shop">Билеты</a>
         <a class="me-3 py-2 text-dark text-decoration-none" href="/login">Регистрация/Вход</a>
+        <form sec:authorize="hasAuthority('USER')" class="me-3 py-2" th:action="@{/logout}" method="post">
+            <input type="submit" value="Выйти"/>
+        </form>
     </nav>
 </div>
 </div>

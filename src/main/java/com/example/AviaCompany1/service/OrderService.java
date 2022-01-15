@@ -20,6 +20,7 @@ public class OrderService {
 //    private final String MAIL_MESSAGE = "Ваш заказ оформлен";
 //    private final String MAIL_SUBJECT = "Заказ";
 
+    private Integer count=0;
 
     @Autowired
     private ProductRepository productRepository;
@@ -61,11 +62,13 @@ public class OrderService {
         }
 
         orderRepository.deleteById(orderedProduct.getOrder().getId());
-        orderedProduct.getOrder().setStatus(Status.Accepted);
+//        orderedProduct.getOrder().setStatus(Status.Accepted);
         orderedProduct.getOrder().setUser(orderedProduct.getOrder().getUser());
         orderedProduct.getOrder().setOrderedProducts(list1);
         orderedProduct.getOrder().getUser().setBalance(orderedProduct.getOrder().getUser().getBalance()+orderedProduct.getProduct().getPrice());
         orderedProduct.getProduct().setPlaces(orderedProduct.getProduct().getPlaces()+1);
+        count--;
+        orderedProduct.getProduct().setBuyplaces(count);
         orderRepository.save(orderedProduct.getOrder());
     }
 
@@ -85,11 +88,13 @@ public class OrderService {
         }
 
 
-        order.setStatus(Status.Accepted);
+//        order.setStatus(Status.Accepted);
         order.setUser(user);
         order.setOrderedProducts(orderedProducts);
         for (CartItem cartItem : cart.getCartItems()) {
             cartItem.getProduct().setPlaces(cartItem.getProduct().getPlaces()-cartItem.getAmount());
+            count++;
+            cartItem.getProduct().setBuyplaces(count);
             productRepository.save(cartItem.getProduct());
         }
         order.setProductsPrise(cart.getTotalPrise());

@@ -24,14 +24,16 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String addUser(User user, Map<String, Object> model) {
+        boolean check=true;
         User userFromDb = userRepository.findByUsername(user.getUsername());
 
         if (userFromDb != null) {
-            model.put("message", "User exists!");
-            return "/failed";
+            check=false;
+            model.put("check", check);
+            return "registration";
         }
 
-
+        user.setBalance(0);
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
         userRepository.save(user);
